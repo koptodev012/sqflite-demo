@@ -36,13 +36,13 @@ class DbHandler {
 
   //! Insert Data
 
-  insertData() async {
+  insertData(String name, int age) async {
     Database? db = await databaseFunction;
 
-    Map<String, dynamic> data = {'name': 'Rohit', 'age': 24};
+    Map<String, dynamic> data = {'name': name, 'age': age};
 
     db?.insert('DatabaseTable', data);
-    log("Data inserted");
+    log("Data inserted name: $name age: $age");
   }
 
   //! Read Data
@@ -52,5 +52,22 @@ class DbHandler {
     final dataList = await db?.query('DatabaseTable');
     log("Data Read");
     return dataList;
+  }
+
+  //! Delete Data
+
+  deleteData(int id) async {
+    Database? db = await databaseFunction;
+    await db?.delete('DatabaseTable', where: 'id = ?', whereArgs: [id]);
+    log("Data Deleted id: $id");
+  }
+
+  //! Update Data
+
+  updateData(int id, String name, int age) async {
+    Database? db = await databaseFunction;
+    Map<String, dynamic> data = {'name': name, 'age': age};
+    await db?.update('DatabaseTable', data, where: 'id = ?', whereArgs: [id]);
+    log("Data Updated id $id --> name: $name age: $age");
   }
 }

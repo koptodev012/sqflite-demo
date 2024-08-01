@@ -27,13 +27,23 @@ class _HomeScreenState extends State<HomeScreen> {
           ElevatedButton(
               child: const Text("Insert"),
               onPressed: () async {
-                await DbHandler().insertData();
+                await DbHandler().insertData("Rutvik", 25);
               }),
           ElevatedButton(
               child: const Text("Read"),
               onPressed: () async {
                 var data = await DbHandler().readData();
                 log("Read Data: $data");
+              }),
+          ElevatedButton(
+              child: const Text("Delete"),
+              onPressed: () async {
+                await DbHandler().deleteData(2);
+              }),
+          ElevatedButton(
+              child: const Text("Update"),
+              onPressed: () async {
+                await DbHandler().updateData(3, "Raj", 30);
               }),
         ],
       )),
