@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:sqflite_demo/features/home/model/model_class.dart';
+import 'package:sqflite_demo/features/home/presentation/data_screen.dart';
 import 'package:sqflite_demo/features/home/services/db_handler.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +16,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //! Floating Action Button
+
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.laptop),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DataScreen(),
+                ));
+          }),
+
+      //! App Bar,
+
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         title: const Text(
@@ -21,13 +37,16 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(color: Colors.white),
         ),
       ),
+
+      //! Body,
+
       body: Center(
           child: Column(
         children: [
           ElevatedButton(
               child: const Text("Insert"),
               onPressed: () async {
-                await DbHandler().insertData("Rutvik", 25);
+                await DbHandler().insertData(ModelClass(name: "www", age: 22));
               }),
           ElevatedButton(
               child: const Text("Read"),
@@ -43,7 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ElevatedButton(
               child: const Text("Update"),
               onPressed: () async {
-                await DbHandler().updateData(3, "Raj", 30);
+                await DbHandler()
+                    .updateData(ModelClass(id: 3, name: "prem", age: 33));
               }),
         ],
       )),

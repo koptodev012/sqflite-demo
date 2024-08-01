@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_demo/features/home/model/model_class.dart';
 
 class DbHandler {
   Database? database;
@@ -36,22 +37,20 @@ class DbHandler {
 
   //! Insert Data
 
-  insertData(String name, int age) async {
+  insertData(ModelClass modelclass) async {
     Database? db = await databaseFunction;
 
-    Map<String, dynamic> data = {'name': name, 'age': age};
-
-    db?.insert('DatabaseTable', data);
-    log("Data inserted name: $name age: $age");
+    db?.insert('DatabaseTable', modelclass.toMap());
+    log("Data inserted name: ${modelclass.name} age: ${modelclass.age}");
   }
 
   //! Read Data
 
-  readData() async {
+  Future<List<ModelClass>> readData() async {
     Database? db = await databaseFunction;
     final dataList = await db?.query('DatabaseTable');
     log("Data Read");
-    return dataList;
+    return dataList!.map((e) => ModelClass.fromMap(e)).toList();
   }
 
   //! Delete Data
@@ -64,10 +63,11 @@ class DbHandler {
 
   //! Update Data
 
-  updateData(int id, String name, int age) async {
+  updateData(ModelClass modelclass) async {
     Database? db = await databaseFunction;
-    Map<String, dynamic> data = {'name': name, 'age': age};
-    await db?.update('DatabaseTable', data, where: 'id = ?', whereArgs: [id]);
-    log("Data Updated id $id --> name: $name age: $age");
+
+    await db?.update('DatabaseTable', modelclass.toMap(),
+        where: 'id = ?', whereArgs: [modelclass.id]);
+    log("Data Updated id ${modelclass.id} --> name: ${modelclass.name} age: ${modelclass.age}");
   }
 }
